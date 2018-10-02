@@ -1,0 +1,75 @@
+\documentclass[11pt]{report}
+\usepackage{outline}
+\usepackage{pmgraph}
+\usepackage[normalem]{ulem}
+\title{\textbf{AerE 361 Lab 6 Report}}
+\author{Dalton Michalski}
+\date{\oldstylenums{10}/\oldstylenums{2}/\oldstylenums{2018}}
+%--------------------Make usable space all of page
+\setlength\parindent{24pt}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{0in}
+\setlength{\headsep}{-.25in}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{8.5in}
+\usepackage{xcolor}
+\definecolor{light-gray}{gray}{0.95}
+\newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}}
+%--------------------Indention
+\setlength{\parindent}{1cm}
+
+\begin{document}
+%--------------------Title Page
+\maketitle
+ 
+%--------------------Begin Outline
+\section{Problem}
+	\textbf{Problem Statement}
+    \\Write a program in C that can calculate the Maclaurin series for the exponential function, ($e^x$). Where the Maclaurin series is: \begin{equation}
+        e^x = \sum \frac{x^n}{n!}
+    \end{equation}
+    \\
+    \\ Program Outline:
+    \begin{outline}
+    	\item Inputs: \begin{enumerate}
+        \item A real value of $x$
+        \item A relative error value to use as a convergence criteria, $\epsilon$
+        \begin{equation}
+            \epsilon \geq |\frac{x_f - x_m}{x_f}|
+        \end{equation}
+        \\ Where,
+        \\ $x_m =$ Maclaurin series sum for that iteration
+        \\ $x_f =$ actual exponential function value, $e^x$, for given $x$
+        \end{enumerate}
+    	\item Outputs: \begin{itemize}
+        \item The calculated value for $e^x$
+        \item What order the series needed to converge
+        \end{itemize}
+	\end{outline}
+
+
+\newpage
+
+\section{Design}
+\ This program can be divided into 2 parts: 
+\begin{enumerate}
+\item Data Initialization \& Input
+\item Maclaurin Series Calculation
+\end{enumerate}
+\begin{outline}
+\item\textbf{Data Initialization \& Input}
+\\All necessary data was initialized as in the form of double floats, except for the loop variable $i$, which was initialized as an integer. Double floats were chosen for the majority of the data for simplicity, mainly to avoid performing mathematical operations involving different data types (e.g dividing a float by an unsigned integer). The double float data type also allows for an extremely large number of decimal points, which in turn can allow for very small error in the convergence criteria. The data was input to program using \code{printf} to prompt the user and \code{scanf} to gather and store the input values. The only inputs for this code are a real value for $x$, and the criteria for convergence(relative error), $\epsilon$.
+\item \textbf{Maclaurin Series Calculation}
+\\ At the heart of the code, is a \code{while} statement that uses the input convergence criteria as its seen in equation (2). "While" that condition is still true, a \code{do} statement is used to continuously sum the series terms. The header file \code{math.h} is inserted so that the \code{pow} and \code{exp} functions could be used during calculations.\code{pow} takes two inputs, $x,n$ and returns the value of $x^n$. The \code{exp} takes one input, $x$ and returns the value of $e^x$.An external function, named "factorial" was used to compute the factorial terms needed for the summation. This was accomplished using a \code{while} loop.
+\end{outline}
+\newpage
+\section{Discussion}
+The main issue I ran into during this project, was a large error in my calculated values. I was able to trace this back to the division of different data types within the \code{main} function of my code. In order to resolve this, I made all data the same type, double floats, and my code then started to return correct values. I was initially also having some issues making sure my code was always calculating and using the correct factorial values, but this was resolved by taking the factorial calculation outside of the \code{main} function. Outside of those two issues, the rest of the coding went relatively smoothly and I believe i have produced a well function Maclaurin series calculator.One noteworthy observation is that this series is pretty accurage as long as $x < 7$, under this threshold the code will always converge quickly, even to $\epsilon < 0.00001$ or smaller relative error. Im assuming this is because the series is expanded from $x=0$ so the farther $x$ is from zero, the less accurate this series is.
+\newpage
+\section{References}
+\\ https://reu.dimacs.rutgers.edu/Symbols.pdf
+\\ https://en.wikipedia.org/wiki/Taylor\_series
+\\ https://fresh2refresh.com/c-programming/c-function/c-math-h-library-functions/
+\\ https://www.programiz.com/c-programming/examples/factorial
+\end{document}
